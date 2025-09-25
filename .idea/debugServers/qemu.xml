@@ -1,0 +1,14 @@
+<component name="DebugServers">
+  <generic-debug-target name="qemu" uniqueID="15483a91-dbed-4333-b597-82d60de5cd47" selected="true">
+    <debugger version="1">
+      <debugger kind="GDB" isBundled="true" />
+      <env />
+    </debugger>
+    <gdbserver exe="C:/tools/qemu/qemu-system-arm.exe" args="-machine olimex-stm32-h405 -nographic -S -s -semihosting -semihosting-config enable=on,target=native -serial mon:stdio">
+      <env />
+    </gdbserver>
+    <console port="4444" />
+    <target reset-command="monitor system_reset" reset-before="false" reset-after="false" />
+    <connection extended-remote="false" remote-string="tcp::1234" custom-script="echo Connecting to target...\n&#10;$GDBTargetCommand$&#10;echo Connected to target!\n" warmup-ms="500" />
+  </generic-debug-target>
+</component>
