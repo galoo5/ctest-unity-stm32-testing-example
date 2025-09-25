@@ -17,5 +17,5 @@ int main(void) {
     UnityBegin(__FILE__);
     RUN_TEST(test_2x2_still_eq_4);
     RUN_TEST(test_2x2_still_ne_5);
-    exit(UnityEnd()) ;
+    exit(UnityEnd());
 }
