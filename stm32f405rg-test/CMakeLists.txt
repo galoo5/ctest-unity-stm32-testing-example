@@ -31,8 +31,13 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 # Enable CMake support for ASM and C languages
 enable_language(C ASM)
 
-# Create an executable object type
-add_executable(${CMAKE_PROJECT_NAME})
+#Original generated code:
+## Create an executable object type
+#add_executable(${CMAKE_PROJECT_NAME})
+
+#Modified code:
+# Create an HW level library
+add_library(${CMAKE_PROJECT_NAME} STATIC)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -44,14 +49,14 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ../tests/test_sample.c
-    ../tests/unity/unity.c
+    # Add user sources here
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    ../tests/unity
+    # Add user defined include paths
 )
+
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
@@ -66,40 +71,4 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
     # Add user defined libraries
-)
-
-# Project modification to enable semihosting
-target_link_options (${CMAKE_PROJECT_NAME} PRIVATE -specs=rdimon.specs -lc -lrdimon)
-set_source_files_properties(Core/Src/syscalls.c Core/Src/sysmem.c PROPERTIES HEADER_FILE_ONLY 1 )
-
-# Enable CTest
-include(CTest)
-enable_testing()
-
-# Register the test with CTest
-add_test(NAME unity_sample_test
-        COMMAND C:/tools/qemu/qemu-system-arm.exe
-        -kernel $<TARGET_FILE:${CMAKE_PROJECT_NAME}>
-        -machine olimex-stm32-h405
-        -nographic
-        -semihosting
-        -semihosting-config enable=on,target=native
-        -serial mon:stdio
-        -kernel $<TARGET_FILE:${CMAKE_PROJECT_NAME}>
-)
-
-# Register the test with CTest
-add_test(NAME unity_sample_test_hw
-        COMMAND C:/tools/openocd-v0.12.0-i686-w64-mingw32/bin/openocd.exe
-        -f board/stm32f4discovery.cfg
-        -c "init"
-        -c "arm semihosting enable"
-        -c "arm semihosting_resexit enable"
-        -c "program $<TARGET_FILE:${CMAKE_PROJECT_NAME}> reset"
-)
-
-set_tests_properties(unity_sample_test_hw
-PROPERTIES
-        FAIL_REGULAR_EXPRESSION ":FAIL"
-        PASS_REGULAR_EXPRESSION ":PASS"
 )

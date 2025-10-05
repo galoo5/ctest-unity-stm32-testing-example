@@ -1,5 +1,5 @@
 <component name="DebugServers">
-  <generic-debug-target name="qemu" uniqueID="15483a91-dbed-4333-b597-82d60de5cd47" selected="true">
+  <generic-debug-target name="qemu" uniqueID="15483a91-dbed-4333-b597-82d60de5cd47">
     <debugger version="1">
       <debugger kind="GDB" isBundled="true" />
       <env />

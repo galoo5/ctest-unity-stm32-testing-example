@@ -1,0 +1,36 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "generator": "Ninja",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "arm-test",
+      "inherits": "base",
+      "toolchainFile": "${sourceDir}/stm32f405rg-test/cmake/gcc-arm-none-eabi.cmake"
+    }, {
+      "name": "dev-test",
+      "inherits": "base"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "dev-test-run",
+      "configurePreset": "dev-test"
+    },
+    {
+      "name": "arm-test-run",
+      "configurePreset": "arm-test"
+    }
+  ]
+}
