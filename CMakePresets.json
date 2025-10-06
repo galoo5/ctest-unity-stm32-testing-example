@@ -29,8 +29,22 @@
       "configurePreset": "dev-test"
     },
     {
-      "name": "arm-test-run",
-      "configurePreset": "arm-test"
+      "name": "arm-test-qemu",
+      "configurePreset": "arm-test",
+      "filter": {
+        "exclude": {
+          "name": "_hw$"
+        }
+      }
+    },
+    {
+      "name": "arm-test-hw",
+      "configurePreset": "arm-test",
+      "filter": {
+        "include": {
+          "name": "_hw$"
+        }
+      }
     }
   ]
 }

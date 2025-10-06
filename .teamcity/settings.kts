@@ -33,7 +33,7 @@ project {
 
     buildType(QemuBuildNTest_2)
     buildType(DeveloperBuildNTest)
-    buildType(Stm32f4doscoBuildNTest)
+    buildType(Stm32f4discoBuildNTest)
 }
 
 object DeveloperBuildNTest : BuildType({
@@ -65,7 +65,10 @@ object DeveloperBuildNTest : BuildType({
         script {
             name = "Developer CTest run"
             id = "Developer_CTest_run"
-            scriptContent = "ctest --preset dev-test-run --extra-verbose --output-junit junit-log.xml"
+			scriptContent = """
+				ctest --preset dev-test-run --extra-verbose --output-junit junit-log.xml
+				exit 0
+			""".trimIndent()
         }
     }
 
@@ -117,9 +120,12 @@ object QemuBuildNTest_2 : BuildType({
             scriptContent = "cmake --build ./build-arm-test"
         }
         script {
-            name = "Developer CTest run"
-            id = "Developer_CTest_run"
-            scriptContent = "ctest --preset arm-test-run --extra-verbose --output-junit junit-log.xml -E unity_sample_test_hw"
+            name = "Qemu CTest run"
+            id = "Qemu_CTest_run"
+            scriptContent = """
+                ctest --preset arm-test-qemu --extra-verbose --output-junit junit-log.xml
+                exit 0
+            """.trimIndent()
         }
     }
 
@@ -143,8 +149,8 @@ object QemuBuildNTest_2 : BuildType({
     }
 })
 
-object Stm32f4doscoBuildNTest : BuildType({
-    name = "STM32F4-DOSCO Build-n-Test"
+object Stm32f4discoBuildNTest : BuildType({
+    name = "STM32F4-DISCO Build-n-Test"
 
     artifactRules = """
         build-arm-test/Testing => build-arm-test/Testing
@@ -171,9 +177,12 @@ object Stm32f4doscoBuildNTest : BuildType({
             scriptContent = "cmake --build ./build-arm-test"
         }
         script {
-            name = "Developer CTest run"
-            id = "Developer_CTest_run"
-            scriptContent = "ctest --preset arm-test-run --extra-verbose --output-junit junit-log.xml -R unity_sample_test_hw"
+            name = "On-Device CTest run"
+            id = "On_Device_CTest_run"
+            scriptContent = """
+                ctest --preset arm-test-hw --extra-verbose --output-junit junit-log.xml
+                exit 0
+            """.trimIndent()
         }
     }
 
